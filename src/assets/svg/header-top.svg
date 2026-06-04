@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="121px" height="5px" viewBox="0 0 121 5" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>路径</title>
+    <defs>
+        <linearGradient x1="-1.9359514e-13%" y1="50%" x2="102.255398%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#6A85EC" offset="0%"></stop>
+            <stop stop-color="#CAE6F8" stop-opacity="0.698098776" offset="31.2218299%"></stop>
+            <stop stop-color="#FFFFFF" offset="48.6181001%"></stop>
+            <stop stop-color="#CAE6F8" stop-opacity="0.701076267" offset="72.0602396%"></stop>
+            <stop stop-color="#6A85EC" offset="100%"></stop>
+        </linearGradient>
+        <filter x="-2.5%" y="-46.7%" width="105.0%" height="195.5%" filterUnits="objectBoundingBox" id="filter-2">
+            <feGaussianBlur stdDeviation="1" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="画板" transform="translate(-3778.000000, 0.000000)" fill="url(#linearGradient-1)">
+            <g id="头" transform="translate(0.000000, -3.000000)">
+                <path d="M3779,3.75 L3832.48747,0.393111755 C3836.65917,0.131294813 3840.84318,0.131294813 3845.01488,0.393111755 L3898.50235,3.75 L3898.50235,3.75 L3842.51412,5.85830176 C3840.00638,5.95273379 3837.49597,5.95273379 3834.98822,5.85830176 L3779,3.75 L3779,3.75 Z" id="路径" filter="url(#filter-2)"></path>
+            </g>
+        </g>
+    </g>
+</svg>
