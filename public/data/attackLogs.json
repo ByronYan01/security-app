@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1",
+    "time": "16:01:05",
+    "sourceIp": "198.51.100.42",
+    "targetName": "API_Gateway_01",
+    "attackType": "SQL注入恶意探测",
+    "severity": "critical"
+  },
+  {
+    "id": "2",
+    "time": "16:01:42",
+    "sourceIp": "203.0.113.88",
+    "targetName": "Portal_Web_Server",
+    "attackType": "密码暴破尝试",
+    "severity": "warning"
+  },
+  {
+    "id": "3",
+    "time": "16:02:11",
+    "sourceIp": "192.0.2.145",
+    "targetName": "DB_Server_Cluster",
+    "attackType": "未授权敏感文件读取",
+    "severity": "critical"
+  },
+  {
+    "id": "4",
+    "time": "16:03:00",
+    "sourceIp": "81.92.12.33",
+    "targetName": "LB_Router_02",
+    "attackType": "SYN Flood 流量清洗警告",
+    "severity": "info"
+  },
+  {
+    "id": "5",
+    "time": "16:03:55",
+    "sourceIp": "45.112.9.11",
+    "targetName": "Auth_Service",
+    "attackType": "SSRF漏洞请求劫持",
+    "severity": "warning"
+  }
+]

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { attackLogs, attackIpRankData } from "@/data/mockData";
-import type { AttackLog } from "@/data/mockData";
+import type { AttackLog, AttackIpRank } from "@/data/mockData";
 
 // 攻击类型随机池
 const ATTACK_TYPES = [
@@ -31,8 +30,10 @@ const TARGETS = [
 // 严重程度随机池
 const SEVERITIES: ("critical" | "warning" | "info")[] = ["critical", "warning", "info"];
 
+const DEFAULT_IPS = ["198.51.100.42", "203.0.113.88", "192.0.2.145", "81.92.12.33", "45.112.9.11"];
+
 // 生成随机日志函数
-const generateRandomLog = (index: number): AttackLog => {
+const generateRandomLog = (index: number, ipList: AttackIpRank[] = []): AttackLog => {
   const date = new Date();
   const timeStr = [
     String(date.getHours()).padStart(2, "0"),
@@ -40,7 +41,9 @@ const generateRandomLog = (index: number): AttackLog => {
     String(date.getSeconds()).padStart(2, "0"),
   ].join(":");
 
-  const randomIp = attackIpRankData[Math.floor(Math.random() * attackIpRankData.length)].ip;
+  const randomIp = ipList.length > 0
+    ? ipList[Math.floor(Math.random() * ipList.length)].ip
+    : DEFAULT_IPS[Math.floor(Math.random() * DEFAULT_IPS.length)];
   const target = TARGETS[Math.floor(Math.random() * TARGETS.length)];
   const type = ATTACK_TYPES[Math.floor(Math.random() * ATTACK_TYPES.length)];
   const severity = SEVERITIES[Math.floor(Math.random() * SEVERITIES.length)];
@@ -55,17 +58,32 @@ const generateRandomLog = (index: number): AttackLog => {
   };
 };
 
-const RealtimeAttackList: React.FC = () => {
-  const [logs, setLogs] = useState<AttackLog[]>(attackLogs);
+interface RealtimeAttackListProps {
+  initialLogs?: AttackLog[];
+  attackIpRankData?: AttackIpRank[];
+}
+
+const RealtimeAttackList: React.FC<RealtimeAttackListProps> = ({
+  initialLogs = [],
+  attackIpRankData = [],
+}) => {
+  const [logs, setLogs] = useState<AttackLog[]>(initialLogs);
   const containerRef = useRef<HTMLDivElement>(null);
   const isHovered = useRef(false);
   const logIndexCounter = useRef(0);
+
+  // 同步外部传入的初始化日志
+  useEffect(() => {
+    if (initialLogs && initialLogs.length > 0) {
+      setLogs(initialLogs);
+    }
+  }, [initialLogs]);
 
   // 1. 定期生成新日志，模拟真实态势，最大限制50条以防止DOM堆积与性能下降
   useEffect(() => {
     const timer = setInterval(() => {
       logIndexCounter.current += 1;
-      const newLog = generateRandomLog(logIndexCounter.current);
+      const newLog = generateRandomLog(logIndexCounter.current, attackIpRankData);
       setLogs((prev) => {
         const next = [...prev, newLog];
         // 剪裁队列长度，只保留最新50条
@@ -77,7 +95,7 @@ const RealtimeAttackList: React.FC = () => {
     }, 2800);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [attackIpRankData]);
 
   // 2. 利用 requestAnimationFrame 实现高度平滑的无缝循环滚动
   useEffect(() => {

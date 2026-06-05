@@ -1,13 +1,13 @@
 import React from "react";
 import BaseChart from "./BaseChart";
-import { attackIpRankData } from "@/data/mockData";
+import type { AttackIpRank } from "@/data/mockData";
 import type { EChartsOption } from "echarts";
 
 interface AttackIpBarChartProps {
-  data?: typeof attackIpRankData;
+  data?: AttackIpRank[];
 }
 
-const AttackIpBarChart: React.FC<AttackIpBarChartProps> = ({ data = attackIpRankData }) => {
+const AttackIpBarChart: React.FC<AttackIpBarChartProps> = ({ data = [] }) => {
   // 取Top5并逆序，使排名第一的在最上方展示
   const sortedData = [...data].slice(0, 5).reverse();
   const yData = sortedData.map((item) => item.ip);

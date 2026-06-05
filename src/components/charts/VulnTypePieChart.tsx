@@ -1,13 +1,13 @@
 import React from "react";
 import BaseChart from "./BaseChart";
-import { vulnTypeData } from "@/data/mockData";
+import type { VulnTypeRatio } from "@/data/mockData";
 import type { EChartsOption } from "echarts";
 
 interface VulnTypePieChartProps {
-  data?: typeof vulnTypeData;
+  data?: VulnTypeRatio[];
 }
 
-const VulnTypePieChart: React.FC<VulnTypePieChartProps> = ({ data = vulnTypeData }) => {
+const VulnTypePieChart: React.FC<VulnTypePieChartProps> = ({ data = [] }) => {
   // 转换数据格式以适配 ECharts 饼图
   const chartData = data.slice(0, 5).map((item) => ({
     name: item.type,

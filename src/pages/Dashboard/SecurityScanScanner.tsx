@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { securityScanStats } from "@/data/mockData";
+import type { SecurityScanStats } from "@/data/mockData";
 
-const SecurityScanScanner: React.FC = () => {
-  const [progress, setProgress] = useState(securityScanStats.scanProgress);
+interface SecurityScanScannerProps {
+  data?: SecurityScanStats;
+}
+
+const SecurityScanScanner: React.FC<SecurityScanScannerProps> = ({ data }) => {
+  const [progress, setProgress] = useState(data?.scanProgress ?? 88);
 
   // 动态递增扫描进度 (88% 到 100% 往复循环)，增强大屏运作的实时感
   useEffect(() => {
@@ -15,6 +19,13 @@ const SecurityScanScanner: React.FC = () => {
 
     return () => clearInterval(timer);
   }, []);
+
+  // 同步外部传入的扫描进度
+  useEffect(() => {
+    if (data?.scanProgress !== undefined) {
+      setProgress(data.scanProgress);
+    }
+  }, [data?.scanProgress]);
 
   return (
     <div className="flex h-full w-full items-center justify-between gap-[20px] pl-[16px] pr-[24px] box-border select-none">
@@ -37,7 +48,7 @@ const SecurityScanScanner: React.FC = () => {
           ></div>
 
           {/* 极坐标十字准线 */}
-          <div className="absolute w-full h-[1px] bg-[#19B2FF]/10"></div>
+          <div className="absolute w-[full] h-[1px] bg-[#19B2FF]/10" style={{ width: "100%" }}></div>
           <div className="absolute h-full w-[1px] bg-[#19B2FF]/10"></div>
 
           {/* 圆心自增进度数值显示块 */}
@@ -64,7 +75,7 @@ const SecurityScanScanner: React.FC = () => {
             <span className="text-[13px] text-[#9B9DA5]">已通过节点</span>
           </div>
           <span className="text-[16px] font-bold font-mono text-[#3ED99C] drop-shadow-[0_0_4px_rgba(62,217,156,0.25)]">
-            {securityScanStats.passedCount}
+            {data?.passedCount ?? 0}
           </span>
         </div>
 
@@ -75,7 +86,7 @@ const SecurityScanScanner: React.FC = () => {
             <span className="text-[13px] text-[#9B9DA5]">合规性漏洞</span>
           </div>
           <span className="text-[16px] font-bold font-mono text-[#FFA319] drop-shadow-[0_0_4px_rgba(255,163,25,0.25)]">
-            {securityScanStats.vulnWarningCount}
+            {data?.vulnWarningCount ?? 0}
           </span>
         </div>
 
@@ -89,7 +100,7 @@ const SecurityScanScanner: React.FC = () => {
             <span className="text-[13px] text-[#9B9DA5]">高危风险数</span>
           </div>
           <span className="text-[16px] font-bold font-mono text-[#FA7736] drop-shadow-[0_0_4px_rgba(250,119,54,0.25)]">
-            {securityScanStats.highRiskCount}
+            {data?.highRiskCount ?? 0}
           </span>
         </div>
       </div>

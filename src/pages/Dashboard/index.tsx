@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CardFrame from "@/components/common/CardFrame";
 import ChartListCard from "@/components/common/ChartListCard";
 import type { SimpleColumn } from "@/components/common/ChartListCard";
-import { attackIpRankData, securityStatus } from "@/data/mockData";
-import type { AttackIpRank } from "@/data/mockData";
+import type {
+  SecurityStatus,
+  AttackIpRank,
+  VulnTypeRatio,
+  GpuModelEarning,
+  SecurityScanStats,
+  RadarDimension,
+  AlarmTrendPoint,
+  AttackLog,
+} from "@/data/mockData";
 import headerTop from "@/assets/svg/header-top.svg";
 import headerBottom from "@/assets/svg/header-bottom.svg";
 
@@ -50,7 +58,64 @@ const MiniIndicator: React.FC<{
   );
 };
 
+interface DashboardData {
+  securityStatus: SecurityStatus;
+  attackIpRankData: AttackIpRank[];
+  vulnTypeData: VulnTypeRatio[];
+  gpuModelEarnings: GpuModelEarning[];
+  securityScanStats: SecurityScanStats;
+  radarDimensions: RadarDimension[];
+  alarmTrendData: AlarmTrendPoint[];
+  attackLogs: AttackLog[];
+}
+
 const Dashboard: React.FC = () => {
+  const [data, setData] = useState<DashboardData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAllData = async () => {
+      try {
+        const [
+          securityStatus,
+          attackIpRankData,
+          vulnTypeData,
+          gpuModelEarnings,
+          securityScanStats,
+          radarDimensions,
+          alarmTrendData,
+          attackLogs,
+        ] = await Promise.all([
+          fetch("/data/securityStatus.json").then((res) => res.json()),
+          fetch("/data/attackIpRankData.json").then((res) => res.json()),
+          fetch("/data/vulnTypeData.json").then((res) => res.json()),
+          fetch("/data/gpuModelEarnings.json").then((res) => res.json()),
+          fetch("/data/securityScanStats.json").then((res) => res.json()),
+          fetch("/data/radarDimensions.json").then((res) => res.json()),
+          fetch("/data/alarmTrendData.json").then((res) => res.json()),
+          fetch("/data/attackLogs.json").then((res) => res.json()),
+        ]);
+
+        setData({
+          securityStatus,
+          attackIpRankData,
+          vulnTypeData,
+          gpuModelEarnings,
+          securityScanStats,
+          radarDimensions,
+          alarmTrendData,
+          attackLogs,
+        });
+      } catch (error) {
+        console.error("加载安全大屏数据失败:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAllData();
+  }, []);
+
   // 攻击源IP排名Top5 columns配置
   const ipRankColumns: SimpleColumn<AttackIpRank>[] = [
     {
@@ -103,6 +168,25 @@ const Dashboard: React.FC = () => {
     },
   ];
 
+  if (loading || !data) {
+    return (
+      <div className="w-screen h-screen bg-[#020619] flex flex-col items-center justify-center text-white font-sans select-none">
+        <div className="flex flex-col items-center gap-[16px]">
+          <div className="w-[48px] h-[48px] border-[3px] border-[#19B2FF]/20 border-t-[#0AFFFF] rounded-full animate-spin shadow-[0_0_15px_rgba(10,255,255,0.2)]"></div>
+          <span className="text-[14px] text-[#9B9DA5] font-medium tracking-widest animate-pulse">
+            安全数据同步中...
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  // 获取特定名称因子的分值，有安全的回退默认值
+  const getRadarValue = (name: string, fallback: number): number => {
+    const dim = data.radarDimensions.find((d) => d.name === name);
+    return dim ? dim.value : fallback;
+  };
+
   return (
     <div className="w-screen h-screen bg-[#020619] flex flex-col overflow-hidden text-white font-sans px-[24px] pb-[20px] box-border relative">
       {/* 左上角今日攻击总数 */}
@@ -111,7 +195,7 @@ const Dashboard: React.FC = () => {
           今日遭受攻击总数
         </span>
         <span className="font-jlinxin text-[#FFA319] text-[24px] font-bold tracking-[1px] drop-shadow-[0_0_6px_rgba(255,163,25,0.4)]">
-          {securityStatus.todayAttacks.toLocaleString()}
+          {data.securityStatus.todayAttacks.toLocaleString()}
         </span>
         <span className="text-[#9B9DA5] text-[12px]">次</span>
       </div>
@@ -162,8 +246,8 @@ const Dashboard: React.FC = () => {
           <CardFrame className="flex-[33] min-h-0 flex flex-col">
             <ChartListCard
               title="攻击源IP排名Top5"
-              chart={<AttackIpBarChart />}
-              tableData={attackIpRankData}
+              chart={<AttackIpBarChart data={data.attackIpRankData} />}
+              tableData={data.attackIpRankData}
               columns={ipRankColumns}
               rowBackgroundColor="rgba(250, 119, 54, 0.15)"
               className="h-full"
@@ -177,7 +261,7 @@ const Dashboard: React.FC = () => {
               漏洞攻击类型分布Top5
             </div>
             <div className="flex-1 min-h-[0px] flex flex-col">
-              <VulnTypePieChart />
+              <VulnTypePieChart data={data.vulnTypeData} />
             </div>
           </CardFrame>
 
@@ -188,7 +272,7 @@ const Dashboard: React.FC = () => {
               卡型号平均收益
             </div>
             <div className="flex-1 min-h-[0px] flex flex-col">
-              <GpuModelEarningsChart />
+              <GpuModelEarningsChart data={data.gpuModelEarnings} />
             </div>
           </CardFrame>
         </div>
@@ -204,7 +288,7 @@ const Dashboard: React.FC = () => {
             <div className="flex-1 min-h-[0px] flex items-center justify-between gap-[24px]">
               {/* 左侧雷达大图 */}
               <div className="flex-[65] h-full min-w-[0px]">
-                <SecurityRadarChart />
+                <SecurityRadarChart score={data.securityStatus.score} dimensions={data.radarDimensions} />
               </div>
 
               {/* 右侧安全维度因子监控面板 */}
@@ -216,31 +300,31 @@ const Dashboard: React.FC = () => {
                 <div className="flex-1 flex flex-col justify-around min-h-0">
                   <MiniIndicator
                     label="应用安全评估"
-                    value={88}
+                    value={getRadarValue("应用安全", 88)}
                     color="#0AFFFF"
                     shadowColor="rgba(10, 255, 255, 0.4)"
                   />
                   <MiniIndicator
                     label="边界防御等级"
-                    value={95}
+                    value={getRadarValue("边界防御", 95)}
                     color="#3ED99C"
                     shadowColor="rgba(62, 217, 156, 0.4)"
                   />
                   <MiniIndicator
                     label="主机防御指数"
-                    value={92}
+                    value={getRadarValue("主机入侵", 92)}
                     color="#FFA319"
                     shadowColor="rgba(255, 163, 25, 0.4)"
                   />
                   <MiniIndicator
                     label="漏洞态势健康"
-                    value={85}
+                    value={getRadarValue("漏洞态势", 85)}
                     color="#FA7736"
                     shadowColor="rgba(250, 119, 54, 0.4)"
                   />
                   <MiniIndicator
                     label="合规检测评估"
-                    value={90}
+                    value={getRadarValue("合规检测", 90)}
                     color="#8A9BF7"
                     shadowColor="rgba(138, 155, 247, 0.4)"
                   />
@@ -256,7 +340,7 @@ const Dashboard: React.FC = () => {
               告警变化趋势分析
             </div>
             <div className="flex-1 min-h-[0px] flex flex-col">
-              <AlarmTrendChart />
+              <AlarmTrendChart data={data.alarmTrendData} />
             </div>
           </CardFrame>
         </div>
@@ -270,18 +354,18 @@ const Dashboard: React.FC = () => {
               安全状态扫描
             </div>
             <div className="flex-1 min-h-[0px] flex flex-col">
-              <SecurityScanScanner />
+              <SecurityScanScanner data={data.securityScanStats} />
             </div>
           </CardFrame>
 
           {/* 卡片7 (下，占比 flex-[73]) */}
           <CardFrame className="flex-[73] min-h-0 flex flex-col">
-            <div className="text-[#FFFFFF] text-[16px] font-semibold mb-[12px] shrink-0 flex items-center gap-[6px]">
+            <div className="text-[#FFFFFF] text-[#16px] font-semibold mb-[12px] shrink-0 flex items-center gap-[6px]">
               <span className="inline-block w-[3px] h-[14px] bg-[#FA7736] shadow-[0_0_5px_#FA7736]"></span>
               实时安全告警日志流
             </div>
             <div className="flex-1 min-h-[0px] flex flex-col">
-              <RealtimeAttackList />
+              <RealtimeAttackList initialLogs={data.attackLogs} attackIpRankData={data.attackIpRankData} />
             </div>
           </CardFrame>
         </div>

@@ -1,13 +1,13 @@
 import React from "react";
 import BaseChart from "./BaseChart";
-import { alarmTrendData } from "@/data/mockData";
+import type { AlarmTrendPoint } from "@/data/mockData";
 import type { EChartsOption } from "echarts";
 
 interface AlarmTrendChartProps {
-  data?: typeof alarmTrendData;
+  data?: AlarmTrendPoint[];
 }
 
-const AlarmTrendChart: React.FC<AlarmTrendChartProps> = ({ data = alarmTrendData }) => {
+const AlarmTrendChart: React.FC<AlarmTrendChartProps> = ({ data = [] }) => {
   const xData = data.map((item) => item.time);
   const criticalData = data.map((item) => item.critical);
   const warningData = data.map((item) => item.warning);

@@ -1,14 +1,14 @@
 import React from "react";
 import BaseChart from "./BaseChart";
-import { gpuModelEarnings } from "@/data/mockData";
+import type { GpuModelEarning } from "@/data/mockData";
 import type { EChartsOption } from "echarts";
 
 interface GpuModelEarningsChartProps {
-  data?: typeof gpuModelEarnings;
+  data?: GpuModelEarning[];
 }
 
 const GpuModelEarningsChart: React.FC<GpuModelEarningsChartProps> = ({
-  data = gpuModelEarnings,
+  data = [],
 }) => {
   // 数据逆序排列，以使高收益卡型号展示在最上方
   const sortedData = [...data].reverse();

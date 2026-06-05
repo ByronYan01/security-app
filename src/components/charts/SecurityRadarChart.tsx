@@ -1,16 +1,16 @@
 import React from "react";
 import BaseChart from "./BaseChart";
-import { radarDimensions, securityStatus } from "@/data/mockData";
+import type { RadarDimension } from "@/data/mockData";
 import type { EChartsOption } from "echarts";
 
 interface SecurityRadarChartProps {
   score?: number;
-  dimensions?: typeof radarDimensions;
+  dimensions?: RadarDimension[];
 }
 
 const SecurityRadarChart: React.FC<SecurityRadarChartProps> = ({
-  score = securityStatus.score,
-  dimensions = radarDimensions,
+  score = 0,
+  dimensions = [],
 }) => {
   const option: EChartsOption = {
     tooltip: {

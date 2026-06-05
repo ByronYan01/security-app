@@ -1,0 +1,7 @@
+[
+  { "type": "SQL注入攻击", "count": 4850 },
+  { "type": "XSS跨站脚本", "count": 3200 },
+  { "type": "DDoS流量攻击", "count": 2900 },
+  { "type": "密码暴力破解", "count": 1800 },
+  { "type": "非授权文件上传", "count": 1535 }
+]
