@@ -156,7 +156,7 @@ const RealtimeAttackList: React.FC = () => {
             return (
               <div
                 key={log.id}
-                className="flex items-start py-[10px] px-[8px] border-b border-[#19B2FF]/10 hover:bg-[#19B2FF]/5 transition-colors duration-200"
+                className="flex items-start py-[10px] px-[8px] border-b border-[#19B2FF]/10 hover:bg-[#19B2FF]/5 transition-colors duration-200 shrink-0"
               >
                 {/* 状态指示圆形灯（带呼吸发光效果） */}
                 <div className="mt-[5px] mr-[10px] shrink-0">
@@ -192,7 +192,7 @@ const RealtimeAttackList: React.FC = () => {
             return (
               <div
                 key={`dup-${log.id}`}
-                className="flex items-start py-[10px] px-[8px] border-b border-[#19B2FF]/10 hover:bg-[#19B2FF]/5 transition-colors duration-200"
+                className="flex items-start py-[10px] px-[8px] border-b border-[#19B2FF]/10 hover:bg-[#19B2FF]/5 transition-colors duration-200 shrink-0"
               >
                 <div className="mt-[5px] mr-[10px] shrink-0">
                   <div className={`w-[8px] h-[8px] rounded-full ${style.bg} ${style.shadow}`}></div>

@@ -22,6 +22,21 @@ export interface VulnTypeRatio {
   count: number;
 }
 
+// 新增：卡型号平均收益
+export interface GpuModelEarning {
+  modelName: string;
+  earningsPerHour: number; // 收益金额 (CNY/hour)
+}
+
+// 新增：节点安全扫描状态
+export interface SecurityScanStats {
+  totalNodesScanned: number;
+  scanProgress: number;   // 扫描进度 %
+  passedCount: number;    // 已通过
+  vulnWarningCount: number; // 漏洞告警数
+  highRiskCount: number;  // 高危风险数
+}
+
 // 4. 雷达态势数据
 export interface RadarDimension {
   name: string;
@@ -68,6 +83,22 @@ export const vulnTypeData: VulnTypeRatio[] = [
   { type: "密码暴力破解", count: 1800 },
   { type: "非授权文件上传", count: 1535 }
 ];
+
+export const gpuModelEarnings: GpuModelEarning[] = [
+  { modelName: "NVIDIA H800", earningsPerHour: 45.00 },
+  { modelName: "NVIDIA A100", earningsPerHour: 32.50 },
+  { modelName: "NVIDIA L40S", earningsPerHour: 24.80 },
+  { modelName: "RTX 4090", earningsPerHour: 12.00 },
+  { modelName: "NVIDIA A30", earningsPerHour: 8.50 }
+];
+
+export const securityScanStats: SecurityScanStats = {
+  totalNodesScanned: 120,
+  scanProgress: 88,
+  passedCount: 112,
+  vulnWarningCount: 6,
+  highRiskCount: 2
+};
 
 export const radarDimensions: RadarDimension[] = [
   { name: "应用安全", value: 88, max: 100 },

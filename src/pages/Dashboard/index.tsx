@@ -13,23 +13,19 @@ import VulnTypePieChart from "@/components/charts/VulnTypePieChart";
 import SecurityRadarChart from "@/components/charts/SecurityRadarChart";
 import AlarmTrendChart from "@/components/charts/AlarmTrendChart";
 import RealtimeAttackList from "./RealtimeAttackList";
+import GpuModelEarningsChart from "@/components/charts/GpuModelEarningsChart";
+import SecurityScanScanner from "./SecurityScanScanner";
 
-interface MiniIndicatorProps {
+// 微型安全维度监控进度条组件
+const MiniIndicator: React.FC<{
   label: string;
   value: number;
   color: string;
   shadowColor: string;
-}
-
-const MiniIndicator: React.FC<MiniIndicatorProps> = ({
-  label,
-  value,
-  color,
-  shadowColor,
-}) => {
+}> = ({ label, value, color, shadowColor }) => {
   return (
-    <div className="flex flex-col gap-[6px]">
-      <div className="flex justify-between items-baseline">
+    <div className="flex flex-col gap-[6px] w-full">
+      <div className="flex justify-between items-center">
         <span className="text-[12px] text-[#9B9DA5] font-normal leading-none">
           {label}
         </span>
@@ -81,7 +77,7 @@ const Dashboard: React.FC = () => {
       },
     },
     {
-      title: "源IP / 地理归属",
+      title: "源IP / 归属地",
       width: "55%",
       align: "left",
       render: (record) => (
@@ -162,10 +158,10 @@ const Dashboard: React.FC = () => {
 
       {/* 主体区域 (高度填充余下屏幕) */}
       <div className="flex-1 flex gap-[16px] mt-[16px] min-h-[0px]">
-        {/* 左栏 (25%) */}
+        {/* 左栏 (25% 宽度，垂直排布3张卡片以分配 33 : 33 : 34) */}
         <div className="w-[25%] shrink-0 flex flex-col gap-[14px] h-full min-h-[0px]">
-          {/* 卡片1 (上，高度占约 46%) */}
-          <CardFrame className="flex-[46] min-h-0 flex flex-col">
+          {/* 卡片1 (上，占比 flex-[33]) */}
+          <CardFrame className="flex-[33] min-h-0 flex flex-col">
             <ChartListCard
               title="攻击源IP排名Top5"
               chart={<AttackIpBarChart />}
@@ -176,8 +172,8 @@ const Dashboard: React.FC = () => {
             />
           </CardFrame>
 
-          {/* 卡片2 (下，高度占约 50%) */}
-          <CardFrame className="flex-[54] min-h-0 flex flex-col">
+          {/* 卡片2 (中，占比 flex-[33]) */}
+          <CardFrame className="flex-[33] min-h-0 flex flex-col">
             <div className="text-[#FFFFFF] text-[16px] font-semibold mb-[10px] shrink-0 flex items-center gap-[6px]">
               <span className="inline-block w-[3px] h-[14px] bg-[#19B2FF]"></span>
               漏洞攻击类型分布Top5
@@ -186,12 +182,23 @@ const Dashboard: React.FC = () => {
               <VulnTypePieChart />
             </div>
           </CardFrame>
+
+          {/* 卡片3 (下，占比 flex-[34]) */}
+          <CardFrame className="flex-[34] min-h-0 flex flex-col">
+            <div className="text-[#FFFFFF] text-[16px] font-semibold mb-[10px] shrink-0 flex items-center gap-[6px]">
+              <span className="inline-block w-[3px] h-[14px] bg-[#FFDA47]"></span>
+              卡型号平均收益
+            </div>
+            <div className="flex-1 min-h-[0px] flex flex-col">
+              <GpuModelEarningsChart />
+            </div>
+          </CardFrame>
         </div>
 
         {/* 中间主视觉栏 (50%) */}
         <div className="w-[50%] shrink-0 flex flex-col gap-[14px] h-full min-h-[0px]">
-          {/* 卡片3 (上，高度占约 58%) */}
-          <CardFrame className="flex-[58] min-h-0 flex flex-col">
+          {/* 卡片4 (上，高度占约 64%，采用方案三：雷达图 + 底部5大维度圆环仪表盘) */}
+          <CardFrame className="flex-[64] min-h-0 flex flex-col">
             <div className="text-[#FFFFFF] text-[16px] font-semibold mb-[8px] shrink-0 flex items-center gap-[6px]">
               <span className="inline-block w-[3px] h-[14px] bg-[#0AFFFF] shadow-[0_0_5px_#0AFFFF]"></span>
               安全态势感知中心
@@ -213,7 +220,7 @@ const Dashboard: React.FC = () => {
                 />
               </div>
 
-              {/* 中间雷达大图 (占 56% 宽度) */}
+              {/* 中间雷达大图 */}
               <div className="flex-1 h-full min-w-[0px]">
                 <SecurityRadarChart />
               </div>
@@ -236,8 +243,8 @@ const Dashboard: React.FC = () => {
             </div>
           </CardFrame>
 
-          {/* 卡片4 (下，高度占约 40%) */}
-          <CardFrame className="flex-[42] min-h-0 flex flex-col">
+          {/* 卡片5 (下，高度占约 36%) */}
+          <CardFrame className="flex-[36] min-h-0 flex flex-col">
             <div className="text-[#FFFFFF] text-[16px] font-semibold mb-[8px] shrink-0 flex items-center gap-[6px]">
               <span className="inline-block w-[3px] h-[14px] bg-[#FFA319] shadow-[0_0_5px_#FFA319]"></span>
               告警变化趋势分析
@@ -248,10 +255,21 @@ const Dashboard: React.FC = () => {
           </CardFrame>
         </div>
 
-        {/* 右栏 (25%) */}
-        <div className="w-[25%] shrink-0 h-full min-h-[0px]">
-          {/* 卡片5 (满高) */}
-          <CardFrame className="h-full flex flex-col">
+        {/* 右栏 (25% 宽度，垂直排布2张卡片以分配 27 : 73) */}
+        <div className="w-[25%] shrink-0 flex flex-col gap-[14px] h-full min-h-[0px]">
+          {/* 卡片6 (上，占比 flex-[27]) */}
+          <CardFrame className="flex-[27] min-h-0 flex flex-col">
+            <div className="text-[#FFFFFF] text-[16px] font-semibold mb-[8px] shrink-0 flex items-center gap-[6px]">
+              <span className="inline-block w-[3px] h-[14px] bg-[#0AFFFF] shadow-[0_0_5px_#0AFFFF]"></span>
+              安全状态扫描
+            </div>
+            <div className="flex-1 min-h-[0px] flex flex-col">
+              <SecurityScanScanner />
+            </div>
+          </CardFrame>
+
+          {/* 卡片7 (下，占比 flex-[73]) */}
+          <CardFrame className="flex-[73] min-h-0 flex flex-col">
             <div className="text-[#FFFFFF] text-[16px] font-semibold mb-[12px] shrink-0 flex items-center gap-[6px]">
               <span className="inline-block w-[3px] h-[14px] bg-[#FA7736] shadow-[0_0_5px_#FA7736]"></span>
               实时安全告警日志流
