@@ -238,6 +238,12 @@ const Dashboard: React.FC = () => {
                     color="#FA7736"
                     shadowColor="rgba(250, 119, 54, 0.4)"
                   />
+                  <MiniIndicator
+                    label="合规检测评估"
+                    value={90}
+                    color="#8A9BF7"
+                    shadowColor="rgba(138, 155, 247, 0.4)"
+                  />
                 </div>
               </div>
             </div>
