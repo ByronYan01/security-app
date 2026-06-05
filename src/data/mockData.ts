@@ -109,13 +109,18 @@ export const radarDimensions: RadarDimension[] = [
 ];
 
 export const alarmTrendData: AlarmTrendPoint[] = [
-  { time: "09:00", critical: 12, warning: 32 },
-  { time: "10:00", critical: 8, warning: 45 },
-  { time: "11:00", critical: 24, warning: 68 },
-  { time: "12:00", critical: 15, warning: 41 },
-  { time: "13:00", critical: 30, warning: 85 },
-  { time: "14:00", critical: 18, warning: 54 },
-  { time: "15:00", critical: 10, warning: 48 }
+  { time: "00:00", critical: 5, warning: 18 },
+  { time: "02:00", critical: 3, warning: 12 },
+  { time: "04:00", critical: 4, warning: 15 },
+  { time: "06:00", critical: 2, warning: 10 },
+  { time: "08:00", critical: 8, warning: 28 },
+  { time: "10:00", critical: 15, warning: 45 },
+  { time: "12:00", critical: 12, warning: 38 },
+  { time: "14:00", critical: 20, warning: 56 },
+  { time: "16:00", critical: 18, warning: 50 },
+  { time: "18:00", critical: 28, warning: 75 },
+  { time: "20:00", critical: 22, warning: 62 },
+  { time: "22:00", critical: 10, warning: 35 }
 ];
 
 export const attackLogs: AttackLog[] = [
