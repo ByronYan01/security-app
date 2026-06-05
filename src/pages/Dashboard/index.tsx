@@ -158,8 +158,8 @@ const Dashboard: React.FC = () => {
 
       {/* 主体区域 (高度填充余下屏幕) */}
       <div className="flex-1 flex gap-[16px] mt-[16px] min-h-[0px]">
-        {/* 左栏 (25% 宽度，垂直排布3张卡片以分配 33 : 33 : 34) */}
-        <div className="w-[25%] shrink-0 flex flex-col gap-[14px] h-full min-h-[0px]">
+        {/* 左栏 (自适应 25% 比例宽度，垂直排布3张卡片以分配 33 : 33 : 34) */}
+        <div className="flex-1 flex flex-col gap-[14px] h-full min-h-[0px]">
           {/* 卡片1 (上，占比 flex-[33]) */}
           <CardFrame className="flex-[33] min-h-0 flex flex-col">
             <ChartListCard
@@ -195,8 +195,8 @@ const Dashboard: React.FC = () => {
           </CardFrame>
         </div>
 
-        {/* 中间主视觉栏 (50%) */}
-        <div className="w-[50%] shrink-0 flex flex-col gap-[14px] h-full min-h-[0px]">
+        {/* 中间主视觉栏 (自适应 50% 比例宽度) */}
+        <div className="flex-[2] flex flex-col gap-[14px] h-full min-h-[0px]">
           {/* 卡片4 (上，高度占约 64%，采用方案三：雷达图 + 底部5大维度圆环仪表盘) */}
           <CardFrame className="flex-[64] min-h-0 flex flex-col">
             <div className="text-[#FFFFFF] text-[16px] font-semibold mb-[8px] shrink-0 flex items-center gap-[6px]">
@@ -255,8 +255,8 @@ const Dashboard: React.FC = () => {
           </CardFrame>
         </div>
 
-        {/* 右栏 (25% 宽度，垂直排布2张卡片以分配 27 : 73) */}
-        <div className="w-[25%] shrink-0 flex flex-col gap-[14px] h-full min-h-[0px]">
+        {/* 右栏 (自适应 25% 比例宽度，垂直排布2张卡片以分配 27 : 73) */}
+        <div className="flex-1 flex flex-col gap-[14px] h-full min-h-[0px]">
           {/* 卡片6 (上，占比 flex-[27]) */}
           <CardFrame className="flex-[27] min-h-0 flex flex-col">
             <div className="text-[#FFFFFF] text-[16px] font-semibold mb-[8px] shrink-0 flex items-center gap-[6px]">
