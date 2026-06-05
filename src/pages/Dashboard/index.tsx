@@ -116,8 +116,6 @@ const Dashboard: React.FC = () => {
         <span className="text-[#9B9DA5] text-[12px]">次</span>
       </div>
 
-
-
       {/* 顶部 Header (与 prometheus-app 保持完全一致) */}
       <div className="flex flex-col items-center justify-center w-full max-w-6xl self-center shrink-0 relative">
         <div className="relative w-full flex justify-center items-center">
@@ -204,41 +202,43 @@ const Dashboard: React.FC = () => {
               安全态势感知中心
             </div>
             <div className="flex-1 min-h-[0px] flex items-center justify-between gap-[24px]">
-              {/* 左侧安全维度因子监控 */}
-              <div className="w-[22%] flex flex-col gap-[20px] select-none pl-[8px]">
-                <MiniIndicator
-                  label="应用安全评估"
-                  value={88}
-                  color="#0AFFFF"
-                  shadowColor="rgba(10, 255, 255, 0.4)"
-                />
-                <MiniIndicator
-                  label="边界防御等级"
-                  value={95}
-                  color="#3ED99C"
-                  shadowColor="rgba(62, 217, 156, 0.4)"
-                />
-              </div>
-
-              {/* 中间雷达大图 */}
-              <div className="flex-1 h-full min-w-[0px]">
+              {/* 左侧雷达大图 */}
+              <div className="flex-[65] h-full min-w-[0px]">
                 <SecurityRadarChart />
               </div>
 
-              {/* 右侧安全维度因子监控 */}
-              <div className="w-[22%] flex flex-col gap-[20px] select-none pr-[8px]">
-                <MiniIndicator
-                  label="主机防御指数"
-                  value={92}
-                  color="#FFA319"
-                  shadowColor="rgba(255, 163, 25, 0.4)"
-                />
-                <MiniIndicator
-                  label="漏洞态势健康"
-                  value={85}
-                  color="#FA7736"
-                  shadowColor="rgba(250, 119, 54, 0.4)"
-                />
+              {/* 右侧安全维度因子监控面板 */}
+              <div className="flex-[35] h-[82%] flex flex-col justify-center select-none bg-[#112240]/20 border border-[#19B2FF]/10 rounded-[8px] px-[20px] py-[16px] mr-[16px]">
+                <div className="text-[14px] text-[#0AFFFF] font-semibold flex items-center gap-[6px] mb-[12px] border-b border-[#19B2FF]/10 pb-[8px]">
+                  <span className="inline-block w-[3px] h-[12px] bg-[#0AFFFF] shadow-[0_0_4px_#0AFFFF]"></span>
+                  安全维度因子监控
+                </div>
+                <div className="flex-1 flex flex-col justify-around min-h-0">
+                  <MiniIndicator
+                    label="应用安全评估"
+                    value={88}
+                    color="#0AFFFF"
+                    shadowColor="rgba(10, 255, 255, 0.4)"
+                  />
+                  <MiniIndicator
+                    label="边界防御等级"
+                    value={95}
+                    color="#3ED99C"
+                    shadowColor="rgba(62, 217, 156, 0.4)"
+                  />
+                  <MiniIndicator
+                    label="主机防御指数"
+                    value={92}
+                    color="#FFA319"
+                    shadowColor="rgba(255, 163, 25, 0.4)"
+                  />
+                  <MiniIndicator
+                    label="漏洞态势健康"
+                    value={85}
+                    color="#FA7736"
+                    shadowColor="rgba(250, 119, 54, 0.4)"
+                  />
+                </div>
               </div>
             </div>
           </CardFrame>

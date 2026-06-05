@@ -31,8 +31,8 @@ const SecurityRadarChart: React.FC<SecurityRadarChartProps> = ({
     },
     radar: {
       shape: "polygon", // 多边形网格线
-      center: ["50%", "50%"],
-      radius: "60%",
+      center: ["50%", "55%"], // 中心点微调，偏下一小步腾出顶部文字空间
+      radius: "68%",
       indicator: dimensions.map((dim) => ({
         name: dim.name,
         max: dim.max,
@@ -101,7 +101,7 @@ const SecurityRadarChart: React.FC<SecurityRadarChartProps> = ({
       <BaseChart option={option} height="100%" />
 
       {/* 中心绝对定位的安全评分显示 */}
-      <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] flex flex-col items-center justify-center pointer-events-none z-20">
+      <div className="absolute top-[55%] left-[50%] -translate-x-[50%] -translate-y-[50%] flex flex-col items-center justify-center pointer-events-none z-20">
         <span className="font-jlinxin text-[46px] font-bold text-[#0AFFFF] leading-none drop-shadow-[0_0_8px_rgba(10,255,255,0.7)] tracking-normal">
           {score}
         </span>
